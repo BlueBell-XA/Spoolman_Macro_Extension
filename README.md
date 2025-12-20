@@ -2,7 +2,11 @@
 
 A custom Moonraker component that automatically exposes active Spoolman filament data to Klipper as `gcode_macro` variables. This enables your printer to automatically access filament information (temperatures, material type, vendor, etc.) without manual configuration.
 
-## W
+## Why this exists?
+
+While reviewing all the gcode macros for my Qidi Plus4, I got to the "filament unload" macro and saw that an arbitrary nozzle temp is used (as it is in any other machine I've used!), and I thought, there has to be a better way...
+Realising I have my loaded filament tracked with Spoolman (complete with these types of parameters), I wanted a way to use that spool information to add more accurate gcode functionality, and so this component extension was born.
+
 
 ## Features
 
