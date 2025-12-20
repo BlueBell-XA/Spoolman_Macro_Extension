@@ -37,13 +37,13 @@ Run these commands on your Klipper host (via SSH):
 ```bash
 # Clone the repository
 cd ~
-git clone https://github.com/YOUR_USERNAME/SpoolmanExtension.git
+git clone https://github.com/BlueBell-XA/Spoolman_Macro_Extension.git
 
 # Copy the component to Moonraker
-cp SpoolmanExtension/spoolman_ext.py ~/moonraker/moonraker/components/
+cp Spoolman_Macro_Extension/spoolman_ext.py ~/moonraker/moonraker/components/
 
 # Remove the cloned directory
-rm -rf SpoolmanExtension
+rm -rf Spoolman_Macro_Extension
 ```
 
 ### Step 2: Configure Moonraker
