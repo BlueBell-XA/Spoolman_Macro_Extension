@@ -60,7 +60,7 @@ Add the following below the `[spoolman]` section to your `moonraker.conf`:
 
 Add this macro to your Klipper configuration (e.g., `macros.cfg` or `printer.cfg`):
 
-```gcode
+```ini
 [gcode_macro SPOOLMAN_VARS]
 variable_id: None
 variable_hotend_temp: None
@@ -88,7 +88,7 @@ sudo systemctl restart klipper
 
 Once configured, you can access the Spoolman filament data in any of your Klipper macros:
 
-```gcode
+```ini
 [gcode_macro SET_APPROPRIATE_HOTEND_TEMP]
 description: Sets the hotend temperature based on filament type
 gcode:
@@ -104,11 +104,10 @@ gcode:
 
 ### Example: Usage within existing macros
 
-```gcode
+```ini
 [gcode_macro LOAD_FILAMENT]
 description: Loads filament to toolhead
 gcode:
-    DEBUG_LOG MSG="LOAD_FILAMENT invoked"
     {% set EXTRUDER_TEMP = printer["gcode_macro SPOOLMAN_VARS"].hotend_temp|default(240, true)|int %}
     {% set CURRENT_TEMP = printer.extruder.temperature|int %}
     {% if CURRENT_TEMP < EXTRUDER_TEMP %}
@@ -124,7 +123,7 @@ gcode:
 
 ### Example: Checking if Spool is Selected
 
-```gcode
+```ini
 [gcode_macro PRINT_START_SAFE]
 gcode:
     {% set spoolman = printer["gcode_macro SPOOLMAN_VARS"] %}
@@ -196,4 +195,5 @@ If you encounter issues or have questions:
 2. Review the Moonraker logs
 
 3. Open an issue on GitHub with relevant log excerpts
+
 
