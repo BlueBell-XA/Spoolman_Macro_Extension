@@ -176,7 +176,7 @@ Make sure you've added the `[gcode_macro SPOOLMAN_VARS]` to your Klipper configu
 
 This project is licensed under the GNU General Public License v3.0 - the same license as Moonraker.
 
-For details, see [License](#LICENSE) or visit: https://www.gnu.org/licenses/gpl-3.0.en.html
+For details, see the [License](https://github.com/BlueBell-XA/Spoolman_Macro_Extension/blob/main/LICENSE) or visit: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 ## Contributing
 
@@ -196,3 +196,4 @@ If you encounter issues or have questions:
 2. Review the Moonraker logs
 
 3. Open an issue on GitHub with relevant log excerpts
+
