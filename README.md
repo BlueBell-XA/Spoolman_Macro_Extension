@@ -89,44 +89,37 @@ sudo systemctl restart klipper
 Once configured, you can access the Spoolman filament data in any of your Klipper macros:
 
 ```gcode
-[gcode_macro START_PRINT]
+[gcode_macro SET_APPROPRIATE_HOTEND_TEMP]
+description: Sets the hotend temperature based on filament type
 gcode:
     {% set spoolman = printer["gcode_macro SPOOLMAN_VARS"] %}
-    
-    # Use the temperatures from Spoolman
-    M104 S{spoolman.hotend_temp}  ; Set extruder temp
-    M140 S{spoolman.bed_temp}     ; Set bed temp
-    
-    # Display filament info
-    {action_respond_info("Printing with %s %s" % (spoolman.vendor, spoolman.name))}
-    {action_respond_info("Material: %s" % spoolman.material)}
-    
-    # Wait for temperatures
-    M109 S{spoolman.hotend_temp}  ; Wait for extruder
-    M190 S{spoolman.bed_temp}     ; Wait for bed
-    
-    # Continue with your start sequence...
+    {% set hotend_target_temp = spoolman.hotend_temp|default(240, true)|int %}
+    {% if spoolman.material != None %}
+        M118 Heating nozzle to {hotend_target_temp}C for {spoolman.material} filament.
+    {% else %}
+        M118 Heating nozzle to {hotend_target_temp}C for unknown filament type.
+    {% endif %}
+    M104 S{hotend_target_temp}
 ```
 
-### Example: Conditional Logic Based on Material
+### Example: Usage within existing macros
 
 ```gcode
 [gcode_macro LOAD_FILAMENT]
+description: Loads filament to toolhead
 gcode:
-    {% set spoolman = printer["gcode_macro SPOOLMAN_VARS"] %}
-    {% set material = spoolman.material %}
-    
-    # Material-specific temperatures
-    {% if material == "PETG" %}
-        M109 S245  ; PETG loading temp
-    {% elif material == "ABS" %}
-        M109 S255  ; ABS loading temp
-    {% else %}
-        M109 S215  ; PLA default
+    DEBUG_LOG MSG="LOAD_FILAMENT invoked"
+    {% set EXTRUDER_TEMP = printer["gcode_macro SPOOLMAN_VARS"].hotend_temp|default(240, true)|int %}
+    {% set CURRENT_TEMP = printer.extruder.temperature|int %}
+    {% if CURRENT_TEMP < EXTRUDER_TEMP %}
+        M104 S{EXTRUDER_TEMP}
     {% endif %}
-    
-    # Load filament
-    G1 E50 F300
+    GO_TO_POOP_CHUTE
+    {% if CURRENT_TEMP < EXTRUDER_TEMP %}
+        M109 S{EXTRUDER_TEMP}
+    {% endif %}
+
+    # Existing macro continues here...
 ```
 
 ### Example: Checking if Spool is Selected
@@ -142,7 +135,6 @@ gcode:
         {action_respond_info("Please select a spool before printing.")}
         CANCEL_PRINT
     {% else %}
-        {action_respond_info("Using spool ID: %s" % spoolman.id)}
         START_PRINT
     {% endif %}
 ```
@@ -184,7 +176,7 @@ Make sure you've added the `[gcode_macro SPOOLMAN_VARS]` to your Klipper configu
 
 This project is licensed under the GNU General Public License v3.0 - the same license as Moonraker.
 
-For details or visit: https://www.gnu.org/licenses/gpl-3.0.en.html
+For details, see [License](#LICENSE) or visit: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 ## Contributing
 
@@ -202,4 +194,5 @@ If you encounter issues or have questions:
 
 1. Check the [Troubleshooting](#troubleshooting) section
 2. Review the Moonraker logs
+
 3. Open an issue on GitHub with relevant log excerpts
