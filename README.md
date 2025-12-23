@@ -28,6 +28,9 @@ The following filament properties are made available in the `SPOOLMAN_VARS` macr
 
 **Note**: These details should be set within the filament section in Spoolman web UI.
 
+## See It In Action
+![Spoolman Extension Demo](Spoolman_Extension_Recording.gif)
+
 ## Installation
 
 ### Step 1: Clone and Install
@@ -195,5 +198,6 @@ If you encounter issues or have questions:
 2. Review the Moonraker logs
 
 3. Open an issue on GitHub with relevant log excerpts
+
 
 
